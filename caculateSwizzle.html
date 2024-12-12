@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swizzle Calculator junxia</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .calculator {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        input,
+        select {
+            padding: 8px;
+            font-size: 16px;
+            width: 200px;
+            margin-top: 5px;
+        }
+
+        button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .datatype-info {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        /* Add these new styles */
+        .bit-visualization {
+            font-family: monospace;
+            margin: 20px 0;
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        .bit {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            margin: 2px;
+            border: 1px solid #ccc;
+            background: white;
+        }
+
+        .bit.swapped {
+            background: #ffeb3b;
+            font-weight: bold;
+        }
+
+        .address-example {
+            margin-top: 20px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 4px;
+        }
+
+        .memory-layout {
+            margin: 20px 0;
+            font-family: monospace;
+        }
+
+        .memory-row {
+            display: flex;
+            margin: 2px 0;
+        }
+
+        .memory-block {
+            width: 80px;
+            height: 30px;
+            border: 1px solid #ccc;
+            margin: 1px;
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: white;
+        }
+
+        .layout-title {
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .address {
+            font-size: 10px;
+            color: #666;
+        }
+
+        .binary {
+            font-size: 8px;
+            color: #333;
+        }
+
+        /* Distinct pastel colors */
+        .block-0 {
+            background-color: #e9dc7c !important;
+        }
+
+        .block-1 {
+            background-color: #e9dc7c !important;
+        }
+
+        .block-2 {
+            background-color: #e9dc7c !important;
+        }
+
+        .block-3 {
+            background-color: #e9dc7c !important;
+        }
+
+        .block-4 {
+            background-color: #B3FFE0 !important;
+        }
+
+        .block-5 {
+            background-color: #B3FFE0 !important;
+        }
+
+        .block-6 {
+            background-color: #B3FFE0 !important;
+        }
+
+        .block-7 {
+            background-color: #B3FFE0 !important;
+        }
+
+        .block-8 {
+            background-color: #BAE1FF !important;
+        }
+
+        .block-9 {
+            background-color: #BAE1FF !important;
+        }
+
+        .block-10 {
+            background-color: #BAE1FF !important;
+        }
+
+        .block-11 {
+            background-color: #BAE1FF !important;
+        }
+
+        .block-12 {
+            background-color: #FFFFBA !important;
+        }
+
+        .block-13 {
+            background-color: #FFFFBA !important;
+        }
+
+        .block-14 {
+            background-color: #FFFFBA !important;
+        }
+
+        .block-15 {
+            background-color: #FFFFBA !important;
+        }
+
+        .block-16 {
+            background-color: #FFB3F7 !important;
+        }
+
+        .block-17 {
+            background-color: #FFB3F7 !important;
+        }
+
+        .block-18 {
+            background-color: #FFB3F7 !important;
+        }
+
+        .block-19 {
+            background-color: #FFB3F7 !important;
+        }
+
+        .block-20 {
+            background-color: #b9d181 !important;
+        }
+
+        .block-21 {
+            background-color: #b9d181 !important;
+        }
+
+        .block-22 {
+            background-color: #b9d181 !important;
+        }
+
+        .block-23 {
+            background-color: #b9d181 !important;
+        }
+
+        .block-24 {
+            background-color: #e5c88d !important;
+        }
+
+        .block-25 {
+            background-color: #e5c88d !important;
+        }
+
+        .block-26 {
+            background-color: #e5c88d !important;
+        }
+
+        .block-27 {
+            background-color: #e5c88d !important;
+        }
+
+        .block-28 {
+            background-color: #b5eea9d5 !important;
+        }
+
+        .block-29 {
+            background-color: #b5eea9d5 !important;
+        }
+
+        .block-30 {
+            background-color: #b5eea9d5 !important;
+        }
+
+        .block-31 {
+            background-color: #b5eea9d5 !important;
+        }
+
+        .row-0 {
+            background-color: #f8f8f8 !important;
+        }
+
+        .row-1 {
+            background-color: #f0f0f0 !important;
+        }
+
+        .row-2 {
+            background-color: #f8f8f8 !important;
+        }
+
+        .row-3 {
+            background-color: #f0f0f0 !important;
+        }
+
+        .row-4 {
+            background-color: #f8f8f8 !important;
+        }
+
+        .row-5 {
+            background-color: #f0f0f0 !important;
+        }
+
+        .row-6 {
+            background-color: #f8f8f8 !important;
+        }
+
+        .row-7 {
+            background-color: #f0f0f0 !important;
+        }
+
+        /* Row borders to separate rows clearly */
+        .memory-row {
+            border-bottom: 1px solid #ddd;
+            padding: 2px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="calculator">
+        <h1>SwzlSize Calculator</h1>
+        <div class="input-group">
+            <label for="ctile">Enter CTile value:</label><br>
+            <input type="number" id="ctile" min="1" placeholder="Enter ctile">
+        </div>
+        <div class="input-group">
+            <label for="datatype">Select Datatype:</label><br>
+            <select id="datatype">
+                <option value="fp32">fp32 (4 bytes)</option>
+                <option value="int">int (4 bytes)</option>
+                <option value="bf16">bf16 (2 bytes)</option>
+                <option value="fp16">fp16 (2 bytes)</option>
+                <option value="short">short (2 bytes)</option>
+                <option value="ushort">ushort (2 bytes)</option>
+                <option value="char">char (1 byte)</option>
+                <option value="uchar">uchar (1 byte)</option>
+                <option value="fp8">fp8 (1 byte)</option>
+                <option value="bf8">bf8 (1 byte)</option>
+            </select>
+        </div>
+        <button onclick="calculateSwzlSize()">Calculate</button>
+        <div class="result" id="result">
+            Result will appear here
+        </div>
+    </div>
+
+    <div class="address-example" id="addressExample">
+        <h3>Address Transformation Example</h3>
+        <div>
+            <p>Original Address (in binary):</p>
+            <div id="originalBits" class="bit-visualization"></div>
+
+            <p>After Swizzling:</p>
+            <div id="swizzledBits" class="bit-visualization"></div>
+
+            <div id="explanation"></div>
+        </div>
+    </div>
+    </div>
+    <div id="memoryLayout"></div>
+    <script>
+        function getBit(byte, position) {
+            return (byte >> position) & 1;
+        }
+
+        function isXORBit(pattern, byteIndex, bitIndex) {
+            // Define which bits are XORed for each pattern
+            const xorBits = {
+                16: {
+                    0: [2, 3]  // byte0.bit2, byte0.bit3
+                },
+                32: {
+                    0: [2, 3, 4]  // byte0.bit2, byte0.bit3, byte0.bit4
+                },
+                64: {
+                    0: [2, 3, 4, 5]  // byte0.bit2, byte0.bit3, byte0.bit4, byte0.bit5
+                },
+                128: {
+                    0: [2, 3, 4, 5, 6]  // byte0.bit2, byte0.bit3, byte0.bit4, byte0.bit5, byte0.bit6
+                },
+                256: {
+                    0: [2, 3, 4, 5, 6]  // byte0.bit2, byte0.bit3, byte0.bit4, byte0.bit5, byte0.bit6
+                },
+                512: {
+                    0: [2, 3, 4, 5, 6]  // byte0.bit2, byte0.bit3, byte0.bit4, byte0.bit5, byte0.bit6
+                },
+                1024: {
+                    0: [2, 3, 4, 5, 6]  // byte0.bit2, byte0.bit3, byte0.bit4, byte0.bit5, byte0.bit6
+                },
+                2048: {
+                    0: [2, 3, 4, 5, 6]  // byte0.bit2, byte0.bit3, byte0.bit4, byte0.bit5, byte0.bit6
+                },
+                4096: {
+                    0: [2, 3, 4, 5, 6]  // byte0.bit2, byte0.bit3, byte0.bit4, byte0.bit5, byte0.bit6
+                },
+                8192: {
+                    0: [2, 3, 4, 5, 6]  // byte0.bit2, byte0.bit3, byte0.bit4, byte0.bit5, byte0.bit6
+                }
+            };
+
+            return xorBits[pattern]?.[byteIndex]?.includes(bitIndex) || false;
+        }
+        function applyXOROperations(bytes, pattern) {
+            let newByte0 = bytes[0];
+            let newByte1 = bytes[1];
+
+            switch (pattern) {
+                case 16:
+                    if (getBit(newByte1, 0)) newByte0 ^= (1 << 2);
+                    if (getBit(newByte0, 7)) newByte0 ^= (1 << 3);
+                    break;
+                case 32:
+                    if (getBit(newByte1, 1)) newByte0 ^= (1 << 2);
+                    if (getBit(newByte1, 0)) newByte0 ^= (1 << 3);
+                    if (getBit(newByte0, 7)) newByte0 ^= (1 << 4);
+                    break;
+                case 64:
+                    if (getBit(newByte1, 2)) newByte0 ^= (1 << 2);
+                    if (getBit(newByte1, 1)) newByte0 ^= (1 << 3);
+                    if (getBit(newByte0, 7)) newByte0 ^= (1 << 4);
+                    if (getBit(newByte1, 0)) newByte0 ^= (1 << 5);
+                    break;
+                case 128:
+                    if (getBit(newByte1, 3)) newByte0 ^= (1 << 2);
+                    if (getBit(newByte1, 2)) newByte0 ^= (1 << 3);
+                    if (getBit(newByte0, 7)) newByte0 ^= (1 << 4);
+                    if (getBit(newByte1, 0)) newByte0 ^= (1 << 5);
+                    if (getBit(newByte1, 1)) newByte0 ^= (1 << 6);
+                    break;
+                case 256:
+                    if (getBit(newByte1, 4)) newByte0 ^= (1 << 2);
+                    if (getBit(newByte1, 3)) newByte0 ^= (1 << 3);
+                    if (getBit(newByte1, 0)) newByte0 ^= (1 << 4);
+                    if (getBit(newByte1, 1)) newByte0 ^= (1 << 5);
+                    if (getBit(newByte1, 2)) newByte0 ^= (1 << 6);
+                    break;
+                case 512:
+                    if (getBit(newByte1, 5)) newByte0 ^= (1 << 2);
+                    if (getBit(newByte1, 4)) newByte0 ^= (1 << 3);
+                    if (getBit(newByte1, 1)) newByte0 ^= (1 << 4);
+                    if (getBit(newByte1, 2)) newByte0 ^= (1 << 5);
+                    if (getBit(newByte1, 3)) newByte0 ^= (1 << 6);
+                    break;
+                case 1024:
+                    if (getBit(newByte1, 6)) newByte0 ^= (1 << 2);
+                    if (getBit(newByte1, 5)) newByte0 ^= (1 << 3);
+                    if (getBit(newByte1, 2)) newByte0 ^= (1 << 4);
+                    if (getBit(newByte1, 3)) newByte0 ^= (1 << 5);
+                    if (getBit(newByte1, 4)) newByte0 ^= (1 << 6);
+                    break;
+                case 2048:
+                    if (getBit(newByte1, 7)) newByte0 ^= (1 << 2);
+                    if (getBit(newByte1, 6)) newByte0 ^= (1 << 3);
+                    if (getBit(newByte1, 3)) newByte0 ^= (1 << 4);
+                    if (getBit(newByte1, 4)) newByte0 ^= (1 << 5);
+                    if (getBit(newByte1, 5)) newByte0 ^= (1 << 6);
+                    break;
+            }
+            return [newByte0, newByte1];
+        }
+
+        function generateXORExplanation(pattern) {
+            let explanation = `<p><strong>XOR operations for pattern ${pattern}:</strong></p><ol>`;
+            switch (pattern) {
+                case 16:
+                    explanation += `
+                    <li>byte0.bit2 ^= byte1.bit0</li>
+                    <li>byte0.bit3 ^= byte0.bit7</li>
+                `;
+                    break;
+                case 32:
+                    explanation += `
+                    <li>byte0.bit2 ^= byte1.bit1</li>
+                    <li>byte0.bit3 ^= byte1.bit0</li>
+                    <li>byte0.bit4 ^= byte0.bit7</li>
+                `;
+                    break;
+                case 64:
+                    explanation += `
+                    <li>byte0.bit2 ^= byte1.bit2</li>
+                    <li>byte0.bit3 ^= byte1.bit1</li>
+                    <li>byte0.bit4 ^= byte0.bit7</li>
+                    <li>byte0.bit5 ^= byte1.bit0</li>
+                `;
+                    break;
+                case 128:
+                    explanation += `
+                    <li>byte0.bit2 ^= byte1.bit3</li>
+                    <li>byte0.bit3 ^= byte1.bit2</li>
+                    <li>byte0.bit4 ^= byte0.bit7</li>
+                    <li>byte0.bit5 ^= byte1.bit0</li>
+                    <li>byte0.bit6 ^= byte1.bit1</li>
+                `;
+                    break;
+                case 256:
+                    explanation += `
+                    <li>byte0.bit2 ^= byte1.bit4</li>
+                    <li>byte0.bit3 ^= byte1.bit3</li>
+                    <li>byte0.bit4 ^= byte1.bit0</li>
+                    <li>byte0.bit5 ^= byte1.bit1</li>
+                    <li>byte0.bit6 ^= byte1.bit2</li>
+                `;
+                    break;
+                case 512:
+                    explanation += `
+                    <li>byte0.bit2 ^= byte1.bit5</li>
+                    <li>byte0.bit3 ^= byte1.bit4</li>
+                    <li>byte0.bit4 ^= byte1.bit1</li>
+                    <li>byte0.bit5 ^= byte1.bit2</li>
+                    <li>byte0.bit6 ^= byte1.bit3</li>
+                `;
+                    break;
+                case 1024:
+                    explanation += `
+                    <li>byte0.bit2 ^= byte1.bit6</li>
+                    <li>byte0.bit3 ^= byte1.bit5</li>
+                    <li>byte0.bit4 ^= byte1.bit2</li>
+                    <li>byte0.bit5 ^= byte1.bit3</li>
+                    <li>byte0.bit6 ^= byte1.bit4</li>
+                `;
+                    break;
+                case 2048:
+                    explanation += `
+                    <li>byte0.bit2 ^= byte1.bit7</li>
+                    <li>byte0.bit3 ^= byte1.bit6</li>
+                    <li>byte0.bit4 ^= byte1.bit3</li>
+                    <li>byte0.bit5 ^= byte1.bit4</li>
+                    <li>byte0.bit6 ^= byte1.bit5</li>
+                `;
+                    break;
+            }
+            explanation += '</ol><p>Highlighted bits show the results of XOR operations.</p>';
+            return explanation;
+        }
+        const datatypeSizes = {
+            'fp32': 4,
+            'bf16': 2,
+            'fp16': 2,
+            'char': 1,
+            'uchar': 1,
+            'int': 4,
+            'fp8': 1,
+            'bf8': 1,
+            'short': 2,
+            'ushort': 2
+        };
+
+        function calculateSwzlSizeRecursive(N) {
+            // Base case
+            if (N <= 1) return 1;
+
+            // Recursive case: shift right by 1 and double the result
+            return calculateSwzlSizeRecursive(N >> 1) << 1;
+        }
+
+        function generateMemoryLayout(pattern) {
+            const rows = 8;
+            const cols = 32;
+
+            let originalHTML = '<div class="layout-title">Original Layout</div>';
+            let transformedHTML = '<div class="layout-title">After XOR Transform</div>';
+
+            for (let row = 0; row < rows; row++) {
+                let originalRow = `<div class="memory-row row-${row}">`;
+                let transformedRow = `<div class="memory-row row-${row}">`;
+
+                for (let col = 0; col < cols; col++) {
+                    const address = (row * 128) + (col * 4);
+                    const byte0 = address & 0xFF;
+                    const byte1 = (address >> 8) & 0xFF;
+                    let newByte0 = byte0;
+
+                    // Apply pattern-specific transformations
+                    switch (pattern) {
+                        case 16:
+                            if (getBit(byte1, 0)) newByte0 ^= (1 << 2);
+                            if (getBit(byte0, 7)) newByte0 ^= (1 << 3);
+                            break;
+                        case 32:
+                            if (getBit(byte1, 1)) newByte0 ^= (1 << 2);
+                            if (getBit(byte1, 0)) newByte0 ^= (1 << 3);
+                            if (getBit(byte0, 7)) newByte0 ^= (1 << 4);
+                            break;
+                        case 64:
+                            if (getBit(byte1, 2)) newByte0 ^= (1 << 2);
+                            if (getBit(byte1, 1)) newByte0 ^= (1 << 3);
+                            if (getBit(byte0, 7)) newByte0 ^= (1 << 4);
+                            if (getBit(byte1, 0)) newByte0 ^= (1 << 5);
+                            break;
+                        case 128:
+                            if (getBit(byte1, 3)) newByte0 ^= (1 << 2);
+                            if (getBit(byte1, 2)) newByte0 ^= (1 << 3);
+                            if (getBit(byte0, 7)) newByte0 ^= (1 << 4);
+                            if (getBit(byte1, 0)) newByte0 ^= (1 << 5);
+                            if (getBit(byte1, 1)) newByte0 ^= (1 << 6);
+                            break;
+                        case 256:
+                            if (getBit(byte1, 4)) newByte0 ^= (1 << 2);
+                            if (getBit(byte1, 3)) newByte0 ^= (1 << 3);
+                            if (getBit(byte1, 0)) newByte0 ^= (1 << 4);
+                            if (getBit(byte1, 1)) newByte0 ^= (1 << 5);
+                            if (getBit(byte1, 2)) newByte0 ^= (1 << 6);
+                            break;
+                        case 512:
+                            if (getBit(byte1, 5)) newByte0 ^= (1 << 2);
+                            if (getBit(byte1, 4)) newByte0 ^= (1 << 3);
+                            if (getBit(byte1, 1)) newByte0 ^= (1 << 4);
+                            if (getBit(byte1, 2)) newByte0 ^= (1 << 5);
+                            if (getBit(byte1, 3)) newByte0 ^= (1 << 6);
+                            break;
+                        case 1024:
+                            if (getBit(byte1, 6)) newByte0 ^= (1 << 2);
+                            if (getBit(byte1, 5)) newByte0 ^= (1 << 3);
+                            if (getBit(byte1, 2)) newByte0 ^= (1 << 4);
+                            if (getBit(byte1, 3)) newByte0 ^= (1 << 5);
+                            if (getBit(byte1, 4)) newByte0 ^= (1 << 6);
+                            break;
+                        case 2048:
+                            if (getBit(byte1, 7)) newByte0 ^= (1 << 2);
+                            if (getBit(byte1, 6)) newByte0 ^= (1 << 3);
+                            if (getBit(byte1, 3)) newByte0 ^= (1 << 4);
+                            if (getBit(byte1, 4)) newByte0 ^= (1 << 5);
+                            if (getBit(byte1, 5)) newByte0 ^= (1 << 6);
+                            break;
+                    }
+
+                    const transformedAddr = (byte1 << 8) | newByte0;
+                    const blockColorClass = `block-${col}`;
+
+                    originalRow += `
+                <div class="memory-block ${blockColorClass}">
+                    <div class="address">0x${address.toString(16).padStart(2, '0')}</div>
+                    <div class="binary">${toBinaryString(address)}</div>
+                </div>
+            `;
+
+                    transformedRow += `
+                <div class="memory-block ${blockColorClass}">
+                    <div class="address">0x${transformedAddr.toString(16).padStart(2, '0')}</div>
+                    <div class="binary">${toBinaryString(transformedAddr)}</div>
+                </div>
+            `;
+                }
+
+                originalRow += '</div>';
+                transformedRow += '</div>';
+                originalHTML += originalRow;
+                transformedHTML += transformedRow;
+            }
+
+            return `
+        <div class="memory-layouts-container">
+            <div class="memory-layout">
+                ${originalHTML}
+            </div>
+            <div class="memory-layout">
+                ${transformedHTML}
+            </div>
+        </div>
+    `;
+        }
+        // the example address xor visualization
+        function visualizeMemoryLayout(pattern) {
+            const layoutHTML = generateMemoryLayout(pattern);
+            document.getElementById('memoryLayout').innerHTML = layoutHTML;
+        }
+
+        function visualizeAddressXOR(address, pattern) {
+            const bytes = new Array(4);
+            for (let i = 0; i < 4; i++) {
+                bytes[i] = (address >> (i * 8)) & 0xFF;
+            }
+
+            // Create original address visualization
+            let originalHTML = 'Original Address 0x80:<br>';
+            originalHTML += 'Byte 1 and 0: ';
+            // Show byte 1 first
+            for (let bit = 7; bit >= 0; bit--) {
+                const bitValue = (bytes[1] >> bit) & 1;
+                originalHTML += `<span class="bit">${bitValue}</span>`;
+            }
+            originalHTML += ' ';
+            // Then byte 0
+            for (let bit = 7; bit >= 0; bit--) {
+                const bitValue = (bytes[0] >> bit) & 1;
+                originalHTML += `<span class="bit">${bitValue}</span>`;
+            }
+            document.getElementById('originalBits').innerHTML = originalHTML;
+
+            // Apply XOR operations based on pattern
+            const xorResult = applyXOROperations(bytes, pattern);
+
+            // Create XORed visualization
+            let xoredHTML = 'After XOR Operations :<br>';
+            xoredHTML += 'Byte 1 and 0: ';
+            // Show byte 1 first
+            for (let bit = 7; bit >= 0; bit--) {
+                const bitValue = (xorResult[1] >> bit) & 1;
+                xoredHTML += `<span class="bit">${bitValue}</span>`;
+            }
+            xoredHTML += ' ';
+            // Then byte 0
+            for (let bit = 7; bit >= 0; bit--) {
+                const bitValue = (xorResult[0] >> bit) & 1;
+                const isXORed = isXORBit(pattern, 0, bit);
+                xoredHTML += `<span class="bit ${isXORed ? 'xored' : ''}">${bitValue}</span>`;
+            }
+            document.getElementById('swizzledBits').innerHTML = xoredHTML;
+
+            // Generate explanation based on pattern
+            const explanation = generateXORExplanation(pattern);
+            document.getElementById('explanation').innerHTML = explanation;
+        }
+
+        // the main function
+        // Modify calculateSwzlSize to include visualization
+        function calculateSwzlSize() {
+            const ctile = parseInt(document.getElementById('ctile').value);
+            const datatype = document.getElementById('datatype').value;
+
+            if (isNaN(ctile) || ctile < 1) {
+                alert('Please enter a valid positive number for ctile');
+                return;
+            }
+
+            const datatypeSize = datatypeSizes[datatype];
+            const N = ctile * datatypeSize;
+            const pattern = calculateSwzlSizeRecursive(N);
+
+            const resultHTML = `
+                <h3>Results:</h3>
+                <p>Ctile: ${ctile}</p>
+                <p>Datatype: ${datatype} (${datatypeSize} bytes)</p>
+                <p>N (in bytes): ${N}</p>
+                <p>Swizzle pattern: ${pattern}</p>
+            `;
+
+            document.getElementById('result').innerHTML = resultHTML;
+
+            // Add example address visualization
+            // Let's use a simple address as example: 0x80
+            visualizeAddressXOR(0x80, pattern);
+            visualizeMemoryLayout(pattern);
+        }
+
+        function toBinaryString(num) {
+            return num.toString(2).padStart(16, '0').match(/.{1,8}/g).join(' ');
+        }
+
+    </script>
+    <style>
+        /* Update styles */
+        .bit {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            text-align: center;
+            margin: 2px;
+            border: 1px solid #ccc;
+            background: white;
+            line-height: 25px;
+        }
+
+        .bit.xored {
+            background: #ffeb3b;
+            font-weight: bold;
+        }
+
+        .address-line {
+            margin: 10px 0;
+        }
+
+        .byte-separator {
+            margin: 0 10px;
+            color: #666;
+        }
+    </style>
+
+    <div id="memoryLayout"></div>
+</body>
+
+</html>
